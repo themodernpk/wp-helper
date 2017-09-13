@@ -156,6 +156,31 @@ function wri_get_the_taxonomy($post_id, $taxonomy, $args = null)
     return $terms;
 }
 //---------------------------------------------------------
+function wri_posts_from_custom_field($post_type, $key, $value)
+{
+    $meta_query_args = array(
+        array(
+            'key' => $key,
+            'value' => $value,
+            'compare' => '='
+        )
+    );
+
+    $reviewArgs = array(
+        'post_type' => $post_type,
+        'meta_query' => $meta_query_args,
+    );
+
+    $review_query = new WP_Query( $reviewArgs );
+
+    if(!$review_query->posts)
+    {
+        return false;
+    }
+
+    return $review_query->posts;
+
+}
 //---------------------------------------------------------
 //---------------------------------------------------------
 //---------------------------------------------------------
