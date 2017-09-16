@@ -156,7 +156,7 @@ function wri_get_the_taxonomy($post_id, $taxonomy, $args = null)
     return $terms;
 }
 //---------------------------------------------------------
-function wri_posts_from_custom_field($post_type, $key, $value)
+function wri_get_posts_from_custom_field($post_type, $key, $value)
 {
     $meta_query_args = array(
         array(
@@ -182,7 +182,46 @@ function wri_posts_from_custom_field($post_type, $key, $value)
 
 }
 //---------------------------------------------------------
+function wri_get_theme($theme_name=null)
+{
+
+    if(!$theme_name)
+    {
+        $theme = wp_get_theme();
+    } else
+    {
+        $theme = wp_get_theme($theme_name);
+        if ( !$theme->exists() )
+        {
+            $response['status'] = 'failed';
+            $response['errors'][]= "Theme not exist";
+            return $response;
+        }
+    }
+
+    return $theme;
+}
 //---------------------------------------------------------
+function wri_get_theme_version($theme_name=null)
+{
+    $theme = wri_get_theme($theme_name);
+    if(isset($theme['status']) && $theme['status'] == 'failed')
+    {
+        return $theme;
+    }
+
+    return $theme->get( 'Version' );
+}
 //---------------------------------------------------------
+function wri_get_theme_details($theme_name=null, $key)
+{
+    $theme = wri_get_theme($theme_name);
+    if(isset($theme['status']) && $theme['status'] == 'failed')
+    {
+        return $theme;
+    }
+
+    return $theme->get( $key );
+}
 //---------------------------------------------------------
 //---------------------------------------------------------
